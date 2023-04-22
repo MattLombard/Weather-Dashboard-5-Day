@@ -33,16 +33,10 @@ searchForm.addEventListener('submit', (event) => {
   event.preventDefault(); // added prevent default
   const cityName = searchInput.value;
   searchWeather(cityName);
-  addToSearchHistory(cityName);
-  saveSearchHistory(cityName);
-});
-
-searchForm.addEventListener('submit', (event) => {
-  // added event listener to search form
-  event.preventDefault();
-  const cityName = searchInput.value; // added variable to store search input value
-  searchWeather(cityName);
-  addToSearchHistory(cityName);
+  if (!Array.from(searchHistory.children).some((item) => item.textContent === cityName)) {
+    addToSearchHistory(cityName);
+    saveSearchHistory(cityName);
+  }
 });
 
 function searchWeather(cityName) {
