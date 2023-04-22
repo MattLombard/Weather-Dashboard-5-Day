@@ -31,9 +31,37 @@ function displayCurrentWeather(data) {
   currentWeather.innerHTML = `
         <div class="weather-card">
         <h3>${name} (${date})</h3>
-        <img src="https://openweathermap.org/img/w/${weather[0].icon}.png" alt="Weather icon">
+        <img src="https://openweathermap.org/img/wn/${weather[0].icon}.png" alt="Weather icon">
         <p>Temperature: ${main.temp} °F</p>
         <p>Humidity: ${main.humidity}%</p>
         <p>Wind Speed: ${wind.speed} MPH</p>
         </div>`;
+}
+
+function displayForecast(data) {
+  forecast.innerHTML = '';
+
+  for (let i = 0; i < data.list.length; i += 8) {
+    const { dt_txt, main, weather, wind } = data.list[i];
+    const date = new Date(data.list[i].dt_txt).toLocaleDateString();
+
+    const forecastCard = `
+        <div class="weather-card">
+        <h3>${date}</h3>
+        <img src="https://openweathermap.org/img/wn/${weather[0].icon}.png" alt="Weather icon">
+        <p>Temperature: ${main.temp} °F</p>
+        <p>Humidity: ${main.humidity}%</p>
+        <p>Wind Speed: ${wind.speed} MPH</p>
+        </div>`;
+    forecast.innerHTML += forecastCard;
+  }
+}
+
+function addToSearchHistory(cityName) {
+  const listItem = document.createElement('li');
+  listItem.textContent = cityName;
+  listItem.addEventListener('click', () => {
+    searchWeather(cityName);
+  });
+  searchHistory.appendChild(listItem);
 }
