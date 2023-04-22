@@ -6,7 +6,7 @@ This is a weather dashboard that allows the user to search for a city and see th
 
 https://mattlombard.github.io/Weather-Dashboard-5-Day/
 
-![Website Image](assets/images/_C__Users_ncmat_OneDrive_Desktop_Bootcamp_Modules_module-06_Weather-Dashboard-5-Day_index.html.png)
+![Website image](<assets/images/_C__Users_ncmat_OneDrive_Desktop_Bootcamp_Modules_module-06_Weather-Dashboard-5-Day_index.html%20(1).png>)
 
 ## Collaboraters
 

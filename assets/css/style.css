@@ -42,8 +42,9 @@ button:hover {
 #forecast {
   display: flex;
   justify-content: space-around;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   margin-bottom: 1rem;
+  overflow-x: auto;
 }
 
 .weather-card {
