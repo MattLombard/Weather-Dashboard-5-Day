@@ -23,3 +23,17 @@ function searchWeather(cityName) {
     .then((response) => response.json())
     .then((data) => displayForecast(data));
 }
+
+function displayCurrentWeather(data) {
+  const { main, name, sys, weather, wind } = data;
+  const date = new Date().toLocaleDateString();
+
+  currentWeather.innerHTML = `
+        <div class="weather-card">
+        <h3>${name} (${date})</h3>
+        <img src="https://openweathermap.org/img/w/${weather[0].icon}.png" alt="Weather icon">
+        <p>Temperature: ${main.temp} °F</p>
+        <p>Humidity: ${main.humidity}%</p>
+        <p>Wind Speed: ${wind.speed} MPH</p>
+        </div>`;
+}
