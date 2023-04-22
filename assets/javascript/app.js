@@ -5,42 +5,79 @@ const currentWeather = document.getElementById('current-weather');
 const forecast = document.getElementById('forecast');
 const searchHistory = document.getElementById('search-history');
 
+function loadSearchHistory() {
+  // added function to load search history
+  const savedHistory = JSON.parse(localStorage.getItem('searchHistory')) || []; // added variable to store search history
+
+  savedHistory.forEach((cityName) => {
+    // added for each loop to search history
+    addToSearchHistory(cityName); // added function to add to search history
+  });
+}
+
+function saveSearchHistory(cityName) {
+  // added function to save search history
+  const savedHistory = JSON.parse(localStorage.getItem('searchHistory')) || []; // added variable to store search history
+
+  if (!savedHistory.includes(cityName)) {
+    savedHistory.push(cityName);
+    localStorage.setItem('searchHistory', JSON.stringify(savedHistory));
+  }
+}
+
+// Load search history from local storage
+loadSearchHistory(); // added function to load search history
+
 searchForm.addEventListener('submit', (event) => {
-  event.preventDefault();
+  // added event listener to search form
+  event.preventDefault(); // added prevent default
   const cityName = searchInput.value;
+  searchWeather(cityName);
+  addToSearchHistory(cityName);
+  saveSearchHistory(cityName);
+});
+
+searchForm.addEventListener('submit', (event) => {
+  // added event listener to search form
+  event.preventDefault();
+  const cityName = searchInput.value; // added variable to store search input value
   searchWeather(cityName);
   addToSearchHistory(cityName);
 });
 
 function searchWeather(cityName) {
-  const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}&units=imperial`;
-  const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${API_KEY}&units=imperial`;
-  fetch(currentWeatherUrl)
+  // added function to search weather
+  const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}&units=imperial`; // added variable to store current weather url
+  const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${API_KEY}&units=imperial`; // added variable to store forecast url
+  fetch(currentWeatherUrl) // added fetch to current weather url
     .then((response) => response.json())
     .then((data) => displayCurrentWeather(data));
 
-  fetch(forecastUrl)
+  fetch(forecastUrl) // added fetch to forecast url
     .then((response) => response.json())
     .then((data) => displayForecast(data));
 }
 
 function displayCurrentWeather(data) {
-  const { main, name, sys, weather, wind } = data;
-  const date = new Date().toLocaleDateString();
+  // added function to display current weather
+  const { main, name, sys, weather, wind } = data; // added variables to store data
+  const date = new Date().toLocaleDateString(); // added variable to store date
 
-  currentWeather.innerHTML = `
+  // added innerHTML to display current weather
+  currentWeather.innerHTML = ` 
         <div class="weather-card">
         <h3>${name} (${date})</h3>
         <img src="https://openweathermap.org/img/wn/${weather[0].icon}.png" alt="Weather icon">
         <p>Temperature: ${main.temp} °F</p>
         <p>Humidity: ${main.humidity}%</p>
-        <p>Wind Speed: ${wind.speed} MPH</p>
+        <p>Wind Speed: ${wind.speed} mph</p>
         </div>`;
 }
 
 function displayForecast(data) {
+  // added function to display forecast
   forecast.innerHTML = '';
-
+  // added for loop to display forecast
   for (let i = 0; i < data.list.length; i += 8) {
     const { dt_txt, main, weather, wind } = data.list[i];
     const date = new Date(data.list[i].dt_txt).toLocaleDateString();
@@ -51,17 +88,19 @@ function displayForecast(data) {
         <img src="https://openweathermap.org/img/wn/${weather[0].icon}.png" alt="Weather icon">
         <p>Temperature: ${main.temp} °F</p>
         <p>Humidity: ${main.humidity}%</p>
-        <p>Wind Speed: ${wind.speed} MPH</p>
+        <p>Wind Speed: ${wind.speed} mph</p>
         </div>`;
     forecast.innerHTML += forecastCard;
   }
 }
 
 function addToSearchHistory(cityName) {
+  // added function to add to search history
   const listItem = document.createElement('li');
   listItem.textContent = cityName;
   listItem.addEventListener('click', () => {
-    searchWeather(cityName);
+    // added event listener to list item
+    searchWeather(cityName); // added function to search weather
   });
-  searchHistory.appendChild(listItem);
+  searchHistory.appendChild(listItem); // added list item to search history
 }
